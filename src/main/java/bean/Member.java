@@ -13,10 +13,12 @@ public class Member {
 	private String introduction;
 	private Integer companion_review_count;
 	private Integer companion_avg_rating;
-	private Integer customor_review_count;
+	private Integer customer_review_count;
 	private Integer custmer_score;
 	private Timestamp registration_time;
 	private Boolean member_status;
+
+
 
 public Integer getMember_No() {
 		return member_No;
@@ -98,12 +100,12 @@ public Integer getCompanion_avg_rating() {
 		this.companion_avg_rating = companion_avg_rating;
 	}
 
-public Integer getCustomor_review_count() {
-		return customor_review_count;
+public Integer getCustomer_review_count() {
+		return customer_review_count;
 	}
 
-	public void setCustomor_review_count(Integer customor_review_count) {
-		this.customor_review_count = customor_review_count;
+	public void setCustomer_review_count(Integer customer_review_count) {
+		this.customer_review_count = customer_review_count;
 	}
 
 public Integer getCustmer_score() {
