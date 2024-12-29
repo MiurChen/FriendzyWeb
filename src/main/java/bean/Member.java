@@ -11,6 +11,8 @@ public class Member {
 	private String member_pic;
 	private String phone;
 	private String introduction;
+	private String location;
+	private Timestamp companion_available_time;
 	private Integer companion_review_count;
 	private Integer companion_avg_rating;
 	private Integer customer_review_count;
@@ -130,5 +132,21 @@ public Boolean getMember_status() {
 
 	public void setMember_status(Boolean member_status) {
 		this.member_status = member_status;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public Timestamp getCompanion_available_time() {
+		return companion_available_time;
+	}
+
+	public void setCompanion_available_time(Timestamp companion_available_time) {
+		this.companion_available_time = companion_available_time;
 	}
 }

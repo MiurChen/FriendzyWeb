@@ -10,6 +10,6 @@ public interface MemberDao {
 	
 	int update(Member member);
 	
-	Member selectByNo(Integer no);
+	Member selectByEmail(String email);
 	
 }
