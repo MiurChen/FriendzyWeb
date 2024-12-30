@@ -37,6 +37,7 @@ public class MemberDaoImpl implements MemberDao{
 		//測試查詢
 		MemberDao dao = new MemberDaoImpl();
 		Member member = dao.selectByEmail("alexander.smith@example.com");
+//		Member member = dao.selectByNo(1);
 		System.out.println(member.getMpassword());
 		
 		//測試新增
@@ -63,13 +64,13 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 	@Override
-	public Member selectByEmail(String email) {
-		String sql = "SELECT * FROM members where email= ?";
+	public Member selectByNo(Integer no) {
+		String sql = "SELECT * FROM members where member_no = ?";
 		try (
 			Connection conn = ds.getConnection(); //連線
 			PreparedStatement pstmt = conn.prepareStatement(sql); //SQL敘述
 		){
-			pstmt.setString(1,email);
+			pstmt.setInt(1,no);
 			try(ResultSet rs = pstmt.executeQuery()){
 				if(rs.next()) {
 					Member member = new Member();
@@ -139,6 +140,39 @@ public class MemberDaoImpl implements MemberDao{
 	public int update(Member member) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public Member selectByEmail(String email) {
+		String sql = "SELECT * FROM members where email= ?";
+		try (
+			Connection conn = ds.getConnection(); //連線
+			PreparedStatement pstmt = conn.prepareStatement(sql); //SQL敘述
+		){
+			pstmt.setString(1,email);
+			try(ResultSet rs = pstmt.executeQuery()){
+				if(rs.next()) {
+					Member member = new Member();
+					member.setMember_No(rs.getInt("member_No"));
+					member.setEmail(rs.getString("email"));
+					member.setMpassword(rs.getString("mpassword"));
+					member.setMember_name(rs.getString("member_name"));
+					member.setMember_nickname(rs.getString("member_nickname"));
+					member.setPhone(rs.getString("phone"));
+					member.setIntroduction(rs.getString("introduction"));
+					member.setCompanion_review_count(rs.getInt("companion_review_count"));
+					member.setCompanion_avg_rating(rs.getInt("companion_avg_rating"));
+					member.setCustomer_review_count(rs.getInt("customer_review_count"));
+					member.setCustmer_score(rs.getInt("custmer_score"));
+					member.setRegistration_time(rs.getTimestamp("registration_time"));
+					member.setMember_status(rs.getBoolean("member_status"));
+					return member;
+					}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
