@@ -4,9 +4,11 @@ import util.JdbcConstant;
 import util.JdbcConstant.*;
 
 import java.nio.channels.NonWritableChannelException;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Iterator;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -34,33 +36,33 @@ public class MemberDaoImpl implements MemberDao{
 //	}
 	
 	public static void main(String[] args) {
-		//測試查詢
-		MemberDao dao = new MemberDaoImpl();
-		Member member = dao.selectByEmail("alexander.smith@example.com");
-//		Member member = dao.selectByNo(1);
-		System.out.println(member.getMpassword());
+//		//測試查詢
+//		MemberDao dao = new MemberDaoImpl();
+//		Member member = dao.selectByEmail("alexander.smith@example.com");
+////		Member member = dao.selectByNo(1);
+//		System.out.println(member.getMpassword());
 		
 		//測試新增
-//		MemberDao dao = new MemberDaoImpl();
-//		Member newMember = new Member();
-//		newMember.setMember_No(17);
-//		newMember.setEmail("1234@gmail.com");
-//		newMember.setMpassword("123456789");
-//		newMember.setMember_name("Miue");
-//		newMember.setMember_nickname(null);
-//		newMember.setMember_pic(null);
-//		newMember.setPhone(null);
-//		newMember.setIntroduction(null);
-//		newMember.setCompanion_available_time(null);
-//		newMember.setLocation(null);
-//		newMember.setCompanion_review_count(0);
-//		newMember.setCompanion_avg_rating(0);
-//		newMember.setCustomer_review_count(0);
-//		newMember.setCustmer_score(0);
-//		newMember.setRegistration_time(new java.sql.Timestamp(System.currentTimeMillis()));
-//		newMember.setMember_status(true);
-//		int insertResult = dao.insert(newMember);
-//		System.out.println(insertResult);
+		MemberDao dao = new MemberDaoImpl();
+		Member newMember = new Member();
+		newMember.setMember_No(18);
+		newMember.setEmail("1234@gmail.com");
+		newMember.setMpassword("123456789");
+		newMember.setMember_name("Miue");
+		newMember.setMember_nickname(null);
+		newMember.setMember_pic(null);
+		newMember.setPhone(null);
+		newMember.setIntroduction(null);
+		newMember.setCompanion_available_time(null);
+		newMember.setLocation(null);
+		newMember.setCompanion_review_count(0);
+		newMember.setCompanion_avg_rating(0);
+		newMember.setCustomer_review_count(0);
+		newMember.setCustmer_score(0);
+		newMember.setRegistration_time(new java.sql.Timestamp(System.currentTimeMillis()));
+		newMember.setMember_status(true);
+		int insertResult = dao.insert(newMember);
+		System.out.println(insertResult);
 	}
 	
 	@Override
