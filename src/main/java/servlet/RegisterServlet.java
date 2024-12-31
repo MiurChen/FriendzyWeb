@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import bean.Member;
 import dao.MemberDao;
 import dao.Impl.MemberDaoImpl;
 
+@WebServlet("/Register")
 public class RegisterServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
@@ -46,10 +48,10 @@ public class RegisterServlet extends HttpServlet{
 		
 		//新增會員會帶入的預設值
 		newMember.setMember_status(true);
-		newMember.setCompanion_review_count(0);
-        newMember.setCompanion_avg_rating(0);
-        newMember.setCustomer_review_count(0);
-        newMember.setCustmer_score(0);
+		newMember.setCompanion_comment(0); 
+		newMember.setCompanion_score(0); 
+		newMember.setCustmer_comment(0); 
+		newMember.setCustmer_score(0); 
         newMember.setRegistration_time(new java.sql.Timestamp(System.currentTimeMillis()));
 		
 		int result = memberDao.insert(newMember);

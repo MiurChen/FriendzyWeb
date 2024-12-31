@@ -38,36 +38,34 @@ public class MemberDaoImpl implements MemberDao{
 	public static void main(String[] args) {
 //		//測試查詢
 //		MemberDao dao = new MemberDaoImpl();
-//		Member member = dao.selectByEmail("alexander.smith@example.com");
+//		Member member = dao.selectByEmail("john.doe@example.com");
 ////		Member member = dao.selectByNo(1);
 //		System.out.println(member.getMpassword());
 		
 		//測試新增
 		MemberDao dao = new MemberDaoImpl();
 		Member newMember = new Member();
-		newMember.setMember_No(18);
 		newMember.setEmail("1234@gmail.com");
-		newMember.setMpassword("123456789");
-		newMember.setMember_name("Miue");
-		newMember.setMember_nickname(null);
-		newMember.setMember_pic(null);
-		newMember.setPhone(null);
-		newMember.setIntroduction(null);
-		newMember.setCompanion_available_time(null);
-		newMember.setLocation(null);
-		newMember.setCompanion_review_count(0);
-		newMember.setCompanion_avg_rating(0);
-		newMember.setCustomer_review_count(0);
-		newMember.setCustmer_score(0);
-		newMember.setRegistration_time(new java.sql.Timestamp(System.currentTimeMillis()));
-		newMember.setMember_status(true);
+		newMember.setMpassword("12345678");
+		newMember.setMember_name("Miu");
+		newMember.setMember_nick_name(null); // 如果沒有暱稱，可以設置為 null
+		newMember.setMember_pic(null); // 如果沒有會員圖片，可以設置為 null
+		newMember.setPhone(null); // 如果沒有電話號碼，可以設置為 null
+		newMember.setIntroduction(null); // 如果沒有簡介，可以設置為 null
+		newMember.setCompanion_comment(0); // 初始評論數為 0
+		newMember.setCompanion_score(0); // 初始分數為 0
+		newMember.setCustmer_comment(0); // 初始顧客評論數為 0
+		newMember.setCustmer_score(0); // 初始顧客分數為 0
+		newMember.setRegistration_time(new java.sql.Timestamp(System.currentTimeMillis())); // 當前時間戳
+		newMember.setMember_status(true); // 預設為啟用狀態
+		newMember.setMember_token(null); // 如果沒有 token，可以設置為 null
 		int insertResult = dao.insert(newMember);
 		System.out.println(insertResult);
 	}
 	
 	@Override
 	public Member selectByNo(Integer no) {
-		String sql = "SELECT * FROM members where member_no = ?";
+		String sql = "SELECT * FROM member_info where member_no = ?";
 		try (
 			Connection conn = ds.getConnection(); //連線
 			PreparedStatement pstmt = conn.prepareStatement(sql); //SQL敘述
@@ -76,19 +74,20 @@ public class MemberDaoImpl implements MemberDao{
 			try(ResultSet rs = pstmt.executeQuery()){
 				if(rs.next()) {
 					Member member = new Member();
-					member.setMember_No(rs.getInt("member_No"));
+					member.setMember_no(rs.getInt("member_no"));
 					member.setEmail(rs.getString("email"));
 					member.setMpassword(rs.getString("mpassword"));
 					member.setMember_name(rs.getString("member_name"));
-					member.setMember_nickname(rs.getString("member_nickname"));
+					member.setMember_nick_name(rs.getString("member_nick_name"));
 					member.setPhone(rs.getString("phone"));
 					member.setIntroduction(rs.getString("introduction"));
-					member.setCompanion_review_count(rs.getInt("companion_review_count"));
-					member.setCompanion_avg_rating(rs.getInt("companion_avg_rating"));
-					member.setCustomer_review_count(rs.getInt("customer_review_count"));
+					member.setCompanion_comment(rs.getInt("companion_comment"));
+					member.setCompanion_score(rs.getInt("companion_score"));
+					member.setCustmer_comment(rs.getInt("custmer_comment"));
 					member.setCustmer_score(rs.getInt("custmer_score"));
 					member.setRegistration_time(rs.getTimestamp("registration_time"));
 					member.setMember_status(rs.getBoolean("member_status"));
+					member.setMember_token(rs.getString("member_token"));
 					return member;
 					}
 			}
@@ -101,27 +100,29 @@ public class MemberDaoImpl implements MemberDao{
 
 	@Override
 	public int insert(Member member) {
-		String sql = "INSERT INTO members VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?)";
+		String sql = "INSERT INTO member_info (email, mpassword, member_name, member_nick_name, member_pic, phone, " +
+                "introduction, companion_comment, companion_score, custmer_comment, custmer_score, " +
+                "registration_time, member_status, member_token) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try (
 				Connection conn = ds.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);
 			){
-				pstmt.setInt(1, member.getMember_No());
-				pstmt.setString(2, member.getEmail());
-				pstmt.setString(3, member.getMpassword());
-				pstmt.setString(4, member.getMember_name());
-				pstmt.setString(5, member.getMember_nickname());
-				pstmt.setString(6, member.getMember_pic());
-				pstmt.setString(7, member.getPhone());
-				pstmt.setString(8, member.getIntroduction());
-				pstmt.setString(9, member.getLocation());
-				pstmt.setTimestamp(10, member.getCompanion_available_time());
-				pstmt.setInt(11, member.getCompanion_review_count());
-				pstmt.setInt(12, member.getCompanion_avg_rating());
-				pstmt.setInt(13, member.getCustomer_review_count());
-				pstmt.setInt(14, member.getCustmer_score());
-				pstmt.setTimestamp(15, member.getRegistration_time());
-				pstmt.setBoolean(16, member.getMember_status());
+				pstmt.setString(1, member.getEmail());
+				pstmt.setString(2, member.getMpassword());
+				pstmt.setString(3, member.getMember_name());
+				pstmt.setString(4, member.getMember_nick_name());
+				pstmt.setString(5, member.getMember_pic());
+	        	pstmt.setString(6, member.getPhone());
+	        	pstmt.setString(7, member.getIntroduction());
+	        	pstmt.setInt(8, member.getCompanion_comment());
+	        	pstmt.setInt(9, member.getCompanion_score());
+	        	pstmt.setInt(10, member.getCustmer_comment());
+	        	pstmt.setInt(11, member.getCustmer_score());
+	        	pstmt.setTimestamp(12, member.getRegistration_time());
+	        	pstmt.setBoolean(13, member.getMember_status());
+	        	pstmt.setString(14, member.getMember_token());
+	        	
 				return pstmt.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -146,7 +147,7 @@ public class MemberDaoImpl implements MemberDao{
 	
 	@Override
 	public Member selectByEmail(String email) {
-		String sql = "SELECT * FROM members where email= ?";
+		String sql = "SELECT * FROM member_info where email= ?";
 		try (
 			Connection conn = ds.getConnection(); //連線
 			PreparedStatement pstmt = conn.prepareStatement(sql); //SQL敘述
@@ -155,19 +156,20 @@ public class MemberDaoImpl implements MemberDao{
 			try(ResultSet rs = pstmt.executeQuery()){
 				if(rs.next()) {
 					Member member = new Member();
-					member.setMember_No(rs.getInt("member_No"));
+					member.setMember_no(rs.getInt("member_no"));
 					member.setEmail(rs.getString("email"));
 					member.setMpassword(rs.getString("mpassword"));
 					member.setMember_name(rs.getString("member_name"));
-					member.setMember_nickname(rs.getString("member_nickname"));
+					member.setMember_nick_name(rs.getString("member_nick_name"));
 					member.setPhone(rs.getString("phone"));
 					member.setIntroduction(rs.getString("introduction"));
-					member.setCompanion_review_count(rs.getInt("companion_review_count"));
-					member.setCompanion_avg_rating(rs.getInt("companion_avg_rating"));
-					member.setCustomer_review_count(rs.getInt("customer_review_count"));
+					member.setCompanion_comment(rs.getInt("companion_comment"));
+					member.setCompanion_score(rs.getInt("companion_score"));
+					member.setCustmer_comment(rs.getInt("custmer_comment"));
 					member.setCustmer_score(rs.getInt("custmer_score"));
 					member.setRegistration_time(rs.getTimestamp("registration_time"));
 					member.setMember_status(rs.getBoolean("member_status"));
+					member.setMember_token(rs.getString("member_token"));
 					return member;
 					}
 			}

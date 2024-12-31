@@ -16,7 +16,7 @@ import dao.MemberDao;
 import dao.Impl.MemberDaoImpl;
 import util.JdbcConstant.*;
 
-@WebServlet("/LoginServlet")
+@WebServlet("/Login")
 public class LoginServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
